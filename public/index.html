@@ -30,6 +30,7 @@ const firebaseConfig = {
 
   <!-- Przycisk, który uruchomi logowanie -->
   <button id="loginBtn">Zaloguj przez Google</button>
+  <button id="logoutBtn">Wyloguj</button>
 
   <!-- Miejsce, gdzie pokażemy dane użytkownika po zalogowaniu -->
   <div id="userInfo"></div>
@@ -56,6 +57,16 @@ const firebaseConfig = {
           console.error("Błąd logowania:", error);
         });
     });
+
+      logoutBtn.addEventListener('click', async () => {
+    try {
+      await auth.signOut();                     // Wylogowanie
+      userInfo.textContent = 'Nie zalogowany';  // Aktualizacja widoku
+    } catch (e) {
+      console.error(e);
+      alert('Błąd wylogowania: ' + (e.message || e));
+    }
+  });
   </script>
 </body>
 </html>
