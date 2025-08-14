@@ -1,13 +1,63 @@
 <!DOCTYPE html>
-<html>
+<html lang="pl">
 <head>
-    <title>Moja Strona Firebase</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <title>Logowanie Firebase</title>
+
+  <!-- Załadowanie głównej biblioteki Firebase (musi być pierwsza) -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"></script>
+  
+  <!-- Załadowanie modułu Firebase Authentication -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"></script>
+
+  <script>
+    // Konfiguracja projektu (skopiuj swoje dane z konsoli Firebase → Ustawienia projektu → Konfiguracja aplikacji → Web)
+const firebaseConfig = {
+  apiKey: "AIzaSyCvNcxTszFETySRcTnjMnKiEvMj2W7PXXE",
+  authDomain: "probauth-14bf1.firebaseapp.com",
+  projectId: "probauth-14bf1",
+  storageBucket: "probauth-14bf1.firebasestorage.app",
+  messagingSenderId: "759552787326",
+  appId: "1:759552787326:web:f164fea99c2e7e048c292f"
+
+};
+
+    // Inicjalizacja połączenia z Twoim projektem Firebase
+    firebase.initializeApp(firebaseConfig);
+  </script>
 </head>
+
 <body>
-    <h1>Witaj na mojej stronie! fa ma!</h1>
-    <p>Hostowane na Firebase.</p>
-    <p>przetestowane hello world</p>
-    
+  <h1>Logowanie przez Google (Firebase Auth)</h1>
+
+  <!-- Przycisk, który uruchomi logowanie -->
+  <button id="loginBtn">Zaloguj przez Google</button>
+
+  <!-- Miejsce, gdzie pokażemy dane użytkownika po zalogowaniu -->
+  <div id="userInfo"></div>
+
+  <script>
+    // Pobranie modułu Authentication
+    const auth = firebase.auth();
+
+    // Utworzenie providera logowania przez Google
+    const provider = new firebase.auth.GoogleAuthProvider();
+
+    // Obsługa kliknięcia przycisku "Zaloguj przez Google"
+    document.getElementById('loginBtn').addEventListener('click', () => {
+      auth.signInWithPopup(provider) // Otwiera popup logowania Google
+        .then(result => {
+          // Jeśli logowanie się udało:
+          const user = result.user;
+          // Wyświetlamy imię i email w elemencie #userInfo
+          document.getElementById('userInfo').innerHTML =
+            `<p>Witaj, ${user.displayName} (${user.email})</p>`;
+        })
+        .catch(error => {
+          // Obsługa błędu logowania
+          console.error("Błąd logowania:", error);
+        });
+    });
+  </script>
 </body>
 </html>
